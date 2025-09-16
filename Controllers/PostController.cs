@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mini_blog.Data;
@@ -10,6 +11,7 @@ using mini_blog.Helpers;
 namespace mini_blog.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PostController(BlogDbContext context, SlugService slugService) : ControllerBase
     {

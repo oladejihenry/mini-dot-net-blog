@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'mini-blog'
+      POSTGRES_USER: 'postgres'
+  redis:
+    image: redis:7.2.10-alpine
+    ports:
+      - "6379:6379"
