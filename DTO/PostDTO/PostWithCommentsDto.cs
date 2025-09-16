@@ -8,9 +8,10 @@ public class PostWithCommentsDto
     public Guid Id { get; set; }
     public string Title { get; set; } = null!;
     public string Content { get; set; } = null!;
-    
+
     public string Slug { get; set; } = null!;
-    
+
     //Navigtion Properties
-    public List<GetCommentDto> Comments { get; set; }
+    public object Author { get; set; } = null!;
+    public List<GetCommentDto> Comments { get; set; } = new();
 }

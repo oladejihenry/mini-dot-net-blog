@@ -14,6 +14,11 @@ public class Post
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
+    //Add User Relationship
+    [Required]
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
+    
     //Navigtion Properties
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

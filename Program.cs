@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mini Blog API", Version = "v1" });
     c.SupportNonNullableReferenceTypes();
-    c.MapType<object>(() => new OpenApiSchema { Type = "string" }); 
+    c.MapType<object>(() => new OpenApiSchema { Type = "string" });
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -32,7 +32,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddScoped<SlugService>();
 
-builder.Services.AddDbContext<BlogDbContext>(options => 
+builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(Environment.GetEnvironmentVariable("PostgresConnection")).UseSnakeCaseNamingConvention());
 
 //Session
@@ -62,17 +62,25 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "auth";
         options.Cookie.SameSite = SameSiteMode.Strict;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        
+
         options.Events = new CookieAuthenticationEvents
         {
             OnRedirectToLogin = context =>
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new { message = "Authentication required. Please log in." };
+                var jsonResponse = System.Text.Json.JsonSerializer.Serialize(errorResponse);
+                context.Response.WriteAsync(jsonResponse);
                 return Task.CompletedTask;
             },
             OnRedirectToAccessDenied = context =>
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new { message = "Access denied. You don't have permission to access this resource." };
+                var jsonResponse = System.Text.Json.JsonSerializer.Serialize(errorResponse);
+                context.Response.WriteAsync(jsonResponse);
                 return Task.CompletedTask;
             }
         };

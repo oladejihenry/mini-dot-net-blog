@@ -59,14 +59,5 @@ namespace mini_blog.Controllers.Auth
             
             return Ok(userDto);
         }
-        
-        [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
-            return NoContent();
-        }
     }
 }
